@@ -1,0 +1,8 @@
+{
+  "appId": "com.halaqati.app",
+  "appName": "حلقتي",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  }
+}

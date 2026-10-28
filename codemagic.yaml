@@ -1,0 +1,28 @@
+workflows:
+  android-apk:
+    name: حلقتي - ملف أندرويد (APK)
+    max_build_duration: 40
+    instance_type: linux_x2
+    environment:
+      java: 17
+    scripts:
+      - name: تثبيت الحزم
+        script: |
+          node -v
+          npm install
+      - name: تجهيز ملفات الويب (تحميل المكتبات والخطوط داخل التطبيق)
+        script: npm run build
+      - name: إضافة منصة أندرويد
+        script: npx cap add android
+      - name: توليد الأيقونات وشاشة البداية
+        script: npx capacitor-assets generate --android
+      - name: مزامنة الملفات
+        script: npx cap sync android
+      - name: بناء ملف APK
+        script: |
+          cd android
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
+          chmod +x gradlew
+          ./gradlew assembleDebug
+    artifacts:
+      - android/app/build/outputs/**/*.apk
